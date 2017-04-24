@@ -70,7 +70,10 @@ var extractOptsAndCallback = require('extract-opts')
 // fs.readFile(filename, [options], callback)
 function readFile (filename, opts, next) {
 	// Extract options and callback
-	var args = extractOptsAndCallback(opts, next)
+	[opts, next] = extractOptsAndCallback(opts, next)
+  
+  // OR for Javascript environments that don't support assignment destructuring:
+  var args = extractOptsAndCallback(opts, next)
 	opts = args[0]
 	next = args[1]
 
@@ -107,6 +110,17 @@ readFile('package.json', {complete: log})    # works with our custom completion 
 readFile('package.json', {done: log})        # works with our custom completion callback name
 ```
 
+## Destructuring Compatibility
+
+Assignment destructuring allows you to assign multiplevalues at once:
+
+    [opts, next] = extractOptsAndCallback(opts, next)
+    
+This is is supported in Node.js since version 6.4. For browser support see [caniuse.com](http://kangax.github.io/compat-table/es6/#test-destructuring). If this syntax isn't supported in the environments you need, you can use the older more verbose syntax:    
+    
+    var args = extractOptsAndCallback(opts, next)
+	  opts = args[0]
+	  next = args[1]
 
 <!-- HISTORY/ -->
 
